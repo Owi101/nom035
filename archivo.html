@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cuestionario NOM-035</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .seccion {
+      margin-bottom: 40px;
+    }
+    h2 {
+      color: #333;
+    }
+    label {
+      margin-right: 15px;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px 15px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Evaluación NOM-035</h1>
+  <p>Completa el siguiente cuestionario. Al finalizar, podrás imprimir tus respuestas y resultados.</p>
+
+
+  <form id="formulario">
+    <div id="seccion1" class="seccion">
+      <h2>Parte 1: Condiciones generales de trabajo</h2>
+      <div id="preguntas1"></div>
+    </div>
+
+
+    <div id="seccion2" class="seccion">
+      <h2>Parte 2: Demandas emocionales (Opcional)</h2>
+      <div id="preguntas2"></div>
+    </div>
+
+
+    <div id="seccion3" class="seccion">
+      <h2>Parte 3: Relaciones negativas (Opcional)</h2>
+      <div id="preguntas3"></div>
+    </div>
+
+
+    <button type="button" onclick="calcularResultado()">Calcular Resultado</button>
+    <h3 id="resultado"></h3>
+
+
+    <button type="button" id="imprimirBoton">Imprimir cuestionario y resultado</button>
+  </form>
+
+
+  <script>
+    const preguntas1 = [
+      "Mi trabajo me exige hacer mucho esfuerzo físico",
+      "Me preocupa sufrir un accidente en mi trabajo",
+      "Considero que las actividades que realizo son peligrosas",
+      "Por la cantidad de trabajo que tengo debo quedarme tiempo adicional a mi turno",
+      "Por la cantidad de trabajo que tengo debo trabajar sin parar",
+      "Considero que es necesario mantener un ritmo de trabajo acelerado",
+      "Mi trabajo exige que esté muy concentrado",
+      "Mi trabajo requiere que memorice mucha información",
+      "Mi trabajo exige que atienda varios asuntos al mismo tiempo",
+      "En mi trabajo soy responsable de cosas de mucho valor",
+      "Respondo ante mi jefe por los resultados de toda mi área de trabajo",
+      "En mi trabajo me dan órdenes contradictorias",
+      "Considero que en mi trabajo me piden hacer cosas innecesarias",
+      "Trabajo horas extras más de tres veces a la semana",
+      "Mi trabajo me exige laborar en días de descanso, festivos o fines de semana",
+      "Considero que el tiempo en el trabajo es mucho y perjudica mis actividades familiares o personales",
+      "Pienso en las actividades familiares o personales cuando estoy en mi trabajo",
+      "Mi trabajo permite que desarrolle nuevas habilidades",
+      "En mi trabajo puedo aspirar a un mejor puesto",
+      "Durante mi jornada de trabajo puedo tomar pausas cuando las necesito",
+      "Puedo decidir la velocidad a la que realizo mis actividades en mi trabajo",
+      "Puedo cambiar el orden de las actividades que realizo en mi trabajo",
+      "Me informan con claridad cuáles son mis funciones",
+      "Me explican claramente los resultados que debo obtener en mi trabajo",
+      "Me informan con quién puedo resolver problemas o asuntos de trabajo",
+      "Me permiten asistir a capacitaciones relacionadas con mi trabajo",
+      "Recibo capacitación útil para hacer mi trabajo",
+      "Mi jefe tiene en cuenta mis puntos de vista y opiniones",
+      "Mi jefe ayuda a solucionar los problemas que se presentan en el trabajo",
+      "Puedo confiar en mis compañeros de trabajo",
+      "Cuando tenemos que realizar trabajo en equipo los compañeros colaboran",
+      "Mis compañeros de trabajo me ayudan cuando tengo dificultades",
+      "En mi trabajo puedo expresarme libremente sin interrupciones",
+      "Recibo críticas constantes a mi persona y/o trabajo",
+      "Recibo burlas, calumnias, difamaciones, humillaciones o ridiculizaciones",
+      "Se ignora mi presencia o se me excluye de las reuniones de trabajo y en la toma de decisiones",
+      "Se manipulan las situaciones de trabajo para hacerme parecer un mal trabajador",
+      "Se ignoran mis éxitos laborales y se atribuyen a otros trabajadores",
+      "Me bloquean o impiden las oportunidades que tengo para obtener ascenso o mejora en mi trabajo",
+      "He presenciado actos de violencia en mi centro de trabajo"
+    ];
+
+
+    const preguntas2 = [
+      "Atiendo clientes o usuarios muy enojados",
+      "Mi trabajo me exige atender personas muy necesitadas de ayuda o enfermas",
+      "Para hacer mi trabajo debo demostrar sentimientos distintos a los míos"
+    ];
+
+
+    const preguntas3 = [
+      "Comunican tarde los asuntos de trabajo",
+      "Dificultan el logro de los resultados del trabajo",
+      "Ignoran las sugerencias para mejorar su trabajo"
+    ];
+
+
+    function renderizarPreguntas(preguntas, contenedorId, offset, invertida = false) {
+      const contenedor = document.getElementById(contenedorId);
+      preguntas.forEach((pregunta, i) => {
+        const index = offset + i + 1;
+        const valores = invertida ? [5, 4, 3, 2, 1] : [1, 2, 3, 4, 5];
+        const div = document.createElement("div");
+        div.innerHTML = `
+          <p><strong>${index}.</strong> ${pregunta}</p>
+          <label><input type="radio" name="pregunta${index}" value="${valores[0]}"> Nunca</label>
+          <label><input type="radio" name="pregunta${index}" value="${valores[1]}"> Casi nunca</label>
+          <label><input type="radio" name="pregunta${index}" value="${valores[2]}"> Algunas veces</label>
+          <label><input type="radio" name="pregunta${index}" value="${valores[3]}"> Casi siempre</label>
+          <label><input type="radio" name="pregunta${index}" value="${valores[4]}"> Siempre</label>
+        `;
+        contenedor.appendChild(div);
+      });
+    }
+
+
+    renderizarPreguntas(preguntas1, "preguntas1", 0, false);
+    renderizarPreguntas(preguntas2, "preguntas2", preguntas1.length, false);
+    renderizarPreguntas(preguntas3, "preguntas3", preguntas1.length + preguntas2.length, true);
+
+
+    function calcularResultado() {
+      let respuestas = document.querySelectorAll('input[type="radio"]:checked');
+      let puntuacion = 0;
+      respuestas.forEach(r => puntuacion += parseInt(r.value));
+
+
+      let resultado = "";
+      if (puntuacion <= 20) resultado = "Sin riesgo";
+      else if (puntuacion <= 45) resultado = "Riesgo bajo";
+      else if (puntuacion <= 70) resultado = "Riesgo medio";
+      else resultado = "Riesgo alto";
+
+
+      document.getElementById("resultado").innerText = `Puntuación total: ${puntuacion} - ${resultado}`;
+    }
+
+
+    function imprimirPagina() {
+      window.print();
+    }
+
+
+    // Agrega el event listener al botón de imprimir una vez que el DOM esté cargado
+    document.addEventListener('DOMContentLoaded', (event) => {
+        document.getElementById('imprimirBoton').addEventListener('click', imprimirPagina);
+    });
+  </script>
+</body>
+</html>
